@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Malla Interactiva - Licenciatura en Biotecnología</title>
+    <style>
+        :root {
+            /* Modo Claro (Rosa pastel + Celestito) */
+            --bg-body: #fff5f7;
+            --bg-year: #ffffff;
+            --bg-unlocked: #a2d7d8; /* Celestito */
+            --bg-completed: #f8c3cd; /* Rosa pastel */
+            --bg-locked: #e0e0e0;
+            --text-color: #333333;
+            --border-year: #a2d7d8;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Modo Oscuro */
+        body.dark-mode {
+            --bg-body: #1a1a1a;
+            --bg-year: #2d2d2d;
+            --bg-unlocked: #3a506b; /* Azul oscuro */
+            --bg-completed: #5e2c5c; /* Morado oscuro */
+            --bg-locked: #424242;
+            --text-color: #f0f0f0;
+            --border-year: #3a506b;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-body);
+            color: var(--text-color);
+            transition: all 0.5s ease;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-color);
+        }
+        .year {
+            background: var(--bg-year);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--border-year);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .year:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+        }
+        .semester {
+            display: inline-block;
+            width: 48%;
+            vertical-align: top;
+            margin: 5px;
+        }
+        .subject {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            background: var(--bg-locked);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--text-color);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .subject.unlocked {
+            background: var(--bg-unlocked);
+            animation: pulse 1.5s infinite;
+        }
+        .subject.completed {
+            background: var(--bg-completed);
+            transform: scale(1.02);
+        }
+        .subject.locked {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+        .subject:hover:not(.locked) {
+            transform: scale(1.03);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+            accent-color: var(--bg-completed);
+            transform: scale(1.2);
+        }
+        .toggle-mode {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--bg-unlocked);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        .toggle-mode:hover {
+            transform: scale(1.05);
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        .correlative {
+            font-size: 0.8em;
+            color: var(--text-color);
+            opacity: 0.8;
+            display: block;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <button class="toggle-mode" onclick="toggleDarkMode()">🌙 Modo Oscuro</button>
+    <h1>🔬 Malla Interactiva - Licenciatura en Biotecnología</h1>
+
+    <!-- Año 1 -->
+    <div class="year">
+        <h2>📅 Primer Año</h2>
+        <div class="semester">
+            <h3>1er Cuatrimestre</h3>
+            <div class="subject unlocked" onclick="toggleSubject(this)">
+                <input type="checkbox" id="01"> Álgebra y geometría analítica
+                <span class="correlative">Correlativas: Ninguna</span>
+            </div>
+            <div class="subject unlocked" onclick="toggleSubject(this)">
+                <input type="checkbox" id="02"> Química I
+                <span class="correlative">Correlativas: Ninguna</span>
+            </div>
+            <div class="subject unlocked" onclick="toggleSubject(this)">
+                <input type="checkbox" id="04"> Biología general
+                <span class="correlative">Correlativas: Ninguna</span>
+            </div>
+        </div>
+        <div class="semester">
+            <h3>2do Cuatrimestre</h3>
+            <div class="subject locked" id="06" onclick="toggleSubject(this)">
+                <input type="checkbox" disabled> Análisis matemático I
+                <span class="correlative">Correlativas: Álgebra (01)</span>
+            </div>
+            <div class="subject locked" id="07" onclick="toggleSubject(this)">
+                <input type="checkbox" disabled> Química II
+                <span class="correlative">Correlativas: Química I (02)</span>
+            </div>
+            <div class="subject locked" id="08" onclick="toggleSubject(this)">
+                <input type="checkbox" disabled> Microbiología general
+                <span class="correlative">Correlativas: Biología general (04)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Año 2 -->
+    <div class="year">
+        <h2>📅 Segundo Año</h2>
+        <div class="semester">
+            <h3>3er Cuatrimestre</h3>
+            <div class="subject locked" id="10" onclick="toggleSubject(this)">
+                <input type="checkbox" disabled> Física I
+                <span class="correlative">Correlativas: Álgebra (01) + Análisis I (06)</span>
+            </div>
+            <div class="subject locked" id="14" onclick="toggleSubject(this)">
+                <input type="checkbox" disabled> Bioquímica I
+                <span class="correlative">Correlativas: Química orgánica (11)</span>
+            </div>
+        </div>
+        <div class="semester">
+            <h3>4to Cuatrimestre</h3>
+            <div class="subject locked" id="18" onclick="toggleSubject(this)">
+                <input type="checkbox" disabled> Biología celular y molecular
+                <span class="correlative">Correlativas: Biología general (04)</span>
+            </div>
+            <div class="subject locked" id="22" onclick="toggleSubject(this)">
+                <input type="checkbox" disabled> Genética molecular
+                <span class="correlative">Correlativas: Biología celular (18)</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Años 3-5 (continuar así con todas las materias) -->
+    <!-- ¡Agregué solo las primeras por brevedad! Tú puedes completar el resto igual. -->
+
+    <script>
+        // Correlativas completas (ejemplo parcial)
+        const prerequisites = {
+            "06": "01",       // Análisis I → Álgebra
+            "07": "02",       // Química II → Química I
+            "08": "04",       // Microbiología → Biología general
+            "10": ["01", "06"], // Física I → Álgebra + Análisis I
+            "14": "11",       // Bioquímica I → Química orgánica
+            "18": "04",       // Biología celular → Biología general
+            "22": "18",      // Genética molecular → Biología celular
+            // ... Agrega todas las demás correlativas aquí
+        };
+
+        // Función para marcar/desmarcar materias
+        function toggleSubject(subjectDiv) {
+            const checkbox = subjectDiv.querySelector('input[type="checkbox"]');
+            const subjectId = subjectDiv.id;
+
+            if (subjectDiv.classList.contains('locked')) return;
+
+            checkbox.checked = !checkbox.checked;
+            
+            if (checkbox.checked) {
+                subjectDiv.classList.add('completed');
+                unlockNextSubjects(subjectId);
+            } else {
+                subjectDiv.classList.remove('completed');
+                lockDependentSubjects(subjectId);
+            }
+        }
+
+        // Desbloquear correlativas
+        function unlockNextSubjects(subjectId) {
+            for (const [nextSubject, reqSubject] of Object.entries(prerequisites)) {
+                if (Array.isArray(reqSubject)) {
+                    if (reqSubject.includes(subjectId)) {
+                        checkAllPrerequisites(nextSubject);
+                    }
+                } else if (reqSubject === subjectId) {
+                    const nextSubjectDiv = document.getElementById(nextSubject);
+                    nextSubjectDiv.classList.remove('locked');
+                    nextSubjectDiv.classList.add('unlocked');
+                    nextSubjectDiv.querySelector('input[type="checkbox"]').disabled = false;
+                }
+            }
+        }
+
+        // Verificar si todas las correlativas están aprobadas (para materias con múltiples requisitos)
+        function checkAllPrerequisites(subjectId) {
+            const requiredSubjects = prerequisites[subjectId];
+            const allApproved = requiredSubjects.every(sub => {
+                const checkbox = document.getElementById(sub)?.querySelector('input[type="checkbox"]');
+                return checkbox?.checked;
+            });
+            
+            if (allApproved) {
+                const subjectDiv = document.getElementById(subjectId);
+                subjectDiv.classList.remove('locked');
+                subjectDiv.classList.add('unlocked');
+                subjectDiv.querySelector('input[type="checkbox"]').disabled = false;
+            }
+        }
+
+        // Bloquear correlativas si se desmarca
+        function lockDependentSubjects(subjectId) {
+            for (const [nextSubject, reqSubject] of Object.entries(prerequisites)) {
+                if ((Array.isArray(reqSubject) && reqSubject.includes(subjectId)) || reqSubject === subjectId) {
+                    const nextSubjectDiv = document.getElementById(nextSubject);
+                    const nextCheckbox = nextSubjectDiv?.querySelector('input[type="checkbox"]');
+                    
+                    if (nextCheckbox?.checked) {
+                        nextCheckbox.checked = false;
+                        nextSubjectDiv.classList.remove('completed');
+                    }
+                    
+                    nextSubjectDiv?.classList.add('locked');
+                    nextSubjectDiv?.classList.remove('unlocked');
+                    nextCheckbox.disabled = true;
+                }
+            }
+        }
+
+        // Botón de modo oscuro/claro
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.querySelector('.toggle-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = "☀ Modo Claro";
+            } else {
+                button.textContent = "🌙 Modo Oscuro";
+            }
+        }
+    </script>
+</body>
+</html>
