@@ -2,187 +2,546 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Malla Interactiva - Lic. en Biotecnología</title>
+    <title>Licenciatura en Biotecnología</title>
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             /* Modo Claro */
-            --bg-body: #fafafa;
-            --bg-card: #ffffff;
-            --text-primary: #333333;
-            --accent-1: #ff7eb9; /* Rosa pastel */
-            --accent-2: #7afcff; /* Celestito */
-            --border-radius: 16px;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --bg-body: #FFE5D9;
+            --bg-card: #D8E2DC;
+            --text-primary: #5E3023;
+            --subject-unlocked: #FFCAD4;
+            --subject-completed: #F4ACB7;
+            --subject-locked: #9D8189;
+            --border-radius: 18px;
+            --shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
+        
         /* Modo Oscuro */
         body.dark-mode {
-            --bg-body: #121212;
-            --bg-card: #1e1e1e;
-            --text-primary: #f0f0f0;
-            --accent-1: #d6409f; /* Rosa oscuro */
-            --accent-2: #3a506b; /* Azul oscuro */
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            --bg-body: #1A1423;
+            --bg-card: #372549;
+            --text-primary: #EACDC2;
+            --subject-unlocked: #774C60;
+            --subject-completed: #B75D69;
+            --subject-locked: #3D2B3D;
+            --shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
+
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'EB Garamond', serif;
             background: var(--bg-body);
             color: var(--text-primary);
             transition: all 0.5s;
-            padding: 20px;
+            padding: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
+
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
             position: relative;
         }
+
+        h1 {
+            font-weight: 600;
+            font-size: 2.2rem;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
         .toggle-mode {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: var(--accent-2);
+            background: var(--subject-unlocked);
             border: none;
-            padding: 8px 15px;
-            border-radius: 20px;
+            padding: 10px 20px;
+            border-radius: 30px;
             cursor: pointer;
-            font-weight: bold;
+            font-family: 'EB Garamond', serif;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--text-primary);
             box-shadow: var(--shadow);
+            transition: all 0.3s;
         }
-        .semester-container {
+
+        .toggle-mode:hover {
+            transform: translateY(-2px);
+        }
+
+        .year-container {
+            margin-bottom: 40px;
+        }
+
+        .year-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--subject-completed);
+        }
+
+        .semester-columns {
             display: flex;
-            overflow-x: auto;
-            gap: 20px;
-            padding: 10px 0;
-            margin-bottom: 30px;
+            gap: 30px;
         }
+
         .semester-card {
-            min-width: 300px;
+            flex: 1;
             background: var(--bg-card);
             border-radius: var(--border-radius);
-            padding: 20px;
+            padding: 25px;
             box-shadow: var(--shadow);
-            transition: transform 0.3s;
         }
-        .semester-card:hover {
-            transform: translateY(-5px);
-        }
+
         .semester-title {
-            font-size: 1.3em;
-            margin-bottom: 15px;
-            color: var(--accent-1);
-            border-bottom: 2px solid var(--accent-2);
-            padding-bottom: 5px;
-        }
-        .subject {
-            background: rgba(122, 252, 255, 0.1);
-            border-left: 4px solid var(--accent-2);
-            padding: 12px;
-            margin-bottom: 10px;
-            border-radius: 8px;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-        .subject.completed {
-            background: rgba(255, 126, 185, 0.2);
-            border-left-color: var(--accent-1);
-            opacity: 0.8;
-        }
-        .subject.locked {
-            opacity: 0.5;
-            cursor: not-allowed;
-            background: rgba(170, 170, 170, 0.1);
-        }
-        .subject-name {
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .correlative {
-            font-size: 0.8em;
-            margin-top: 5px;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
             color: var(--text-primary);
-            opacity: 0.7;
+            text-align: center;
+            font-weight: 500;
         }
-        @keyframes unlock {
+
+        .subject {
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subject.unlocked {
+            background: var(--subject-unlocked);
+            cursor: pointer;
+            transform: scale(1);
+        }
+
+        .subject.completed {
+            background: var(--subject-completed);
+            text-decoration: line-through;
+        }
+
+        .subject.locked {
+            background: var(--subject-locked);
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: scale(0.98);
+        }
+
+        .subject-name {
+            font-weight: 500;
+            position: relative;
+            z-index: 2;
+        }
+
+        .correlative {
+            font-size: 0.85rem;
+            margin-top: 5px;
+            font-style: italic;
+            opacity: 0.8;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes checkAnimation {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-        .unlocked {
-            animation: unlock 1s ease;
+
+        .completed {
+            animation: checkAnimation 0.6s ease;
+        }
+
+        .subject::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            border-radius: inherit;
+        }
+
+        .subject:hover:not(.locked) {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>🔬 Licenciatura en Biotecnología</h1>
-        <button class="toggle-mode" onclick="toggleDarkMode()">🌙 Modo Oscuro</button>
+        <h1>Licenciatura en Biotecnología</h1>
+        <button class="toggle-mode" onclick="toggleDarkMode()">Modo Oscuro</button>
     </div>
 
     <!-- 1er Año -->
-    <div class="semester-container">
-        <div class="semester-card">
-            <div class="semester-title">1er Semestre</div>
-            <div class="subject" onclick="toggleSubject(this)">
-                <div class="subject-name">📐 Álgebra y geometría analítica</div>
-                <div class="correlative">Correlativas: Ninguna</div>
+    <div class="year-container">
+        <h2 class="year-title">Primer Año</h2>
+        <div class="semester-columns">
+            <!-- 1er Semestre -->
+            <div class="semester-card">
+                <h3 class="semester-title">Primer Semestre</h3>
+                <div class="subject unlocked" onclick="toggleSubject(this)">
+                    <div class="subject-name">[01] Álgebra y geometría analítica</div>
+                    <div class="correlative">Correlativas: Ninguna</div>
+                </div>
+                <div class="subject unlocked" onclick="toggleSubject(this)">
+                    <div class="subject-name">[02] Química I</div>
+                    <div class="correlative">Correlativas: Ninguna</div>
+                </div>
+                <div class="subject unlocked" onclick="toggleSubject(this)">
+                    <div class="subject-name">[03] Informática</div>
+                    <div class="correlative">Correlativas: Ninguna</div>
+                </div>
+                <div class="subject unlocked" onclick="toggleSubject(this)">
+                    <div class="subject-name">[04] Biología General</div>
+                    <div class="correlative">Correlativas: Ninguna</div>
+                </div>
+                <div class="subject unlocked" onclick="toggleSubject(this)">
+                    <div class="subject-name">[05] Taller introducción a la biotecnología</div>
+                    <div class="correlative">Correlativas: Ninguna</div>
+                </div>
             </div>
-            <div class="subject" onclick="toggleSubject(this)">
-                <div class="subject-name">🧪 Química I</div>
-                <div class="correlative">Correlativas: Ninguna</div>
-            </div>
-        </div>
-        <div class="semester-card">
-            <div class="semester-title">2do Semestre</div>
-            <div class="subject locked" id="06" onclick="toggleSubject(this)">
-                <div class="subject-name">📊 Análisis matemático I</div>
-                <div class="correlative">Correlativas: Álgebra (01)</div>
-            </div>
-            <div class="subject locked" id="07" onclick="toggleSubject(this)">
-                <div class="subject-name">🧪 Química II</div>
-                <div class="correlative">Correlativas: Química I (02)</div>
+            
+            <!-- 2do Semestre -->
+            <div class="semester-card">
+                <h3 class="semester-title">Segundo Semestre</h3>
+                <div class="subject locked" id="06" onclick="toggleSubject(this)">
+                    <div class="subject-name">[06] Análisis matemático 1</div>
+                    <div class="correlative">Correlativas: 01</div>
+                </div>
+                <div class="subject locked" id="07" onclick="toggleSubject(this)">
+                    <div class="subject-name">[07] Química 2</div>
+                    <div class="correlative">Correlativas: 02</div>
+                </div>
+                <div class="subject locked" id="08" onclick="toggleSubject(this)">
+                    <div class="subject-name">[08] Microbiología general</div>
+                    <div class="correlative">Correlativas: 04</div>
+                </div>
+                <div class="subject locked" id="09" onclick="toggleSubject(this)">
+                    <div class="subject-name">[09] Elementos de higiene y seguridad</div>
+                    <div class="correlative">Correlativas: Ninguna</div>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- 2do Año -->
-    <div class="semester-container">
-        <div class="semester-card">
-            <div class="semester-title">3er Semestre</div>
-            <div class="subject locked" id="10" onclick="toggleSubject(this)">
-                <div class="subject-name">⚡ Física I</div>
-                <div class="correlative">Correlativas: Álgebra + Análisis I</div>
+    <div class="year-container">
+        <h2 class="year-title">Segundo Año</h2>
+        <div class="semester-columns">
+            <!-- 3er Semestre -->
+            <div class="semester-card">
+                <h3 class="semester-title">Primer Semestre</h3>
+                <div class="subject locked" id="10" onclick="toggleSubject(this)">
+                    <div class="subject-name">[10] Física 1</div>
+                    <div class="correlative">Correlativas: 01-06</div>
+                </div>
+                <div class="subject locked" id="11" onclick="toggleSubject(this)">
+                    <div class="subject-name">[11] Química orgánica</div>
+                    <div class="correlative">Correlativas: 02-07</div>
+                </div>
+                <div class="subject locked" id="12" onclick="toggleSubject(this)">
+                    <div class="subject-name">[12] Diseño estadístico de experimentos</div>
+                    <div class="correlative">Correlativas: 01-06</div>
+                </div>
+                <div class="subject locked" id="13" onclick="toggleSubject(this)">
+                    <div class="subject-name">[13] Ética, legislación y gestión</div>
+                    <div class="correlative">Correlativas: Ninguna</div>
+                </div>
+            </div>
+            
+            <!-- 4to Semestre -->
+            <div class="semester-card">
+                <h3 class="semester-title">Segundo Semestre</h3>
+                <div class="subject locked" id="14" onclick="toggleSubject(this)">
+                    <div class="subject-name">[14] Bioquímica</div>
+                    <div class="correlative">Correlativas: 11</div>
+                </div>
+                <div class="subject locked" id="15" onclick="toggleSubject(this)">
+                    <div class="subject-name">[15] Gestión de calidad 1</div>
+                    <div class="correlative">Correlativas: 02-07</div>
+                </div>
+                <div class="subject locked" id="16" onclick="toggleSubject(this)">
+                    <div class="subject-name">[16] Técnicas analíticas instrumentales</div>
+                    <div class="correlative">Correlativas: 02-07</div>
+                </div>
+                <div class="subject locked" id="17" onclick="toggleSubject(this)">
+                    <div class="subject-name">[17] Fisicoquímica</div>
+                    <div class="correlative">Correlativas: 02-10</div>
+                </div>
             </div>
         </div>
-        <div class="semester-card">
-            <div class="semester-title">4to Semestre</div>
-            <div class="subject locked" id="18" onclick="toggleSubject(this)">
-                <div class="subject-name">🧬 Biología celular y molecular</div>
-                <div class="correlative">Correlativas: Biología general</div>
+    </div>
+
+    <!-- 3er Año -->
+    <div class="year-container">
+        <h2 class="year-title">Tercer Año</h2>
+        <div class="semester-columns">
+            <!-- 5to Semestre -->
+            <div class="semester-card">
+                <h3 class="semester-title">Primer Semestre</h3>
+                <div class="subject locked" id="18" onclick="toggleSubject(this)">
+                    <div class="subject-name">[18] Biología celular y molecular</div>
+                    <div class="correlative">Correlativas: 04</div>
+                </div>
+                <div class="subject locked" id="19" onclick="toggleSubject(this)">
+                    <div class="subject-name">[19] Bioquímica 2</div>
+                    <div class="correlative">Correlativas: 14</div>
+                </div>
+                <div class="subject locked" id="20" onclick="toggleSubject(this)">
+                    <div class="subject-name">[20] Ecología</div>
+                    <div class="correlative">Correlativas: 04</div>
+                </div>
+                <div class="subject locked" id="21" onclick="toggleSubject(this)">
+                    <div class="subject-name">[21] Inglés 1</div>
+                    <div class="correlative">Correlativas: Ninguna</div>
+                </div>
+                <div class="subject locked" id="22" onclick="toggleSubject(this)">
+                    <div class="subject-name">[22] Genética molecular</div>
+                    <div class="correlative">Correlativas: 18</div>
+                </div>
+            </div>
+            
+            <!-- 6to Semestre -->
+            <div class="semester-card">
+                <h3 class="semester-title">Segundo Semestre</h3>
+                <div class="subject locked" id="23" onclick="toggleSubject(this)">
+                    <div class="subject-name">[23] Microbiología avanzada</div>
+                    <div class="correlative">Correlativas: 08</div>
+                </div>
+                <div class="subject locked" id="24" onclick="toggleSubject(this)">
+                    <div class="subject-name">[24] Gestión de calidad 2</div>
+                    <div class="correlative">Correlativas: 15</div>
+                </div>
+                <div class="subject locked" id="25" onclick="toggleSubject(this)">
+                    <div class="subject-name">[25] Políticas públicas en ciencia y tecnología</div>
+                    <div class="correlative">Correlativas: 13</div>
+                </div>
+                <div class="subject locked" id="26" onclick="toggleSubject(this)">
+                    <div class="subject-name">[26] Inglés 2</div>
+                    <div class="correlative">Correlativas: 21</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4to Año -->
+    <div class="year-container">
+        <h2 class="year-title">Cuarto Año</h2>
+        <div class="semester-columns">
+            <!-- 7mo Semestre -->
+            <div class="semester-card">
+                <h3 class="semester-title">Primer Semestre</h3>
+                <div class="subject locked" id="27" onclick="toggleSubject(this)">
+                    <div class="subject-name">[27] Bioinformática</div>
+                    <div class="correlative">Correlativas: 22</div>
+                </div>
+                <div class="subject locked" id="28" onclick="toggleSubject(this)">
+                    <div class="subject-name">[28] Inmunología</div>
+                    <div class="correlative">Correlativas: 18</div>
+                </div>
+                <div class="subject locked" id="29" onclick="toggleSubject(this)">
+                    <div class="subject-name">[29] Agrobiotecnología</div>
+                    <div class="correlative">Correlativas: 20</div>
+                </div>
+                <div class="subject locked" id="30" onclick="toggleSubject(this)">
+                    <div class="subject-name">[30] Ingeniería genética</div>
+                    <div class="correlative">Correlativas: 18-22</div>
+                </div>
+            </div>
+            
+            <!-- 8vo Semestre -->
+            <div class="semester-card">
+                <h3 class="semester-title">Segundo Semestre</h3>
+                <div class="subject locked" id="31" onclick="toggleSubject(this)">
+                    <div class="subject-name">[31] Bioprocesos</div>
+                    <div class="correlative">Correlativas: 08-14</div>
+                </div>
+                <div class="subject locked" id="32" onclick="toggleSubject(this)">
+                    <div class="subject-name">[32] Biotecnología de la salud humana y animal</div>
+                    <div class="correlative">Correlativas: 28</div>
+                </div>
+                <div class="subject locked" id="33" onclick="toggleSubject(this)">
+                    <div class="subject-name">[33] Bioquímica ambiental</div>
+                    <div class="correlative">Correlativas: 19-20</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5to Año -->
+    <div class="year-container">
+        <h2 class="year-title">Quinto Año</h2>
+        <div class="semester-columns">
+            <!-- 9no Semestre -->
+            <div class="semester-card">
+                <h3 class="semester-title">Primer Semestre</h3>
+                <div class="subject locked" id="34" onclick="toggleSubject(this)">
+                    <div class="subject-name">[34] Producción y purificación de proteínas</div>
+                    <div class="correlative">Correlativas: 30</div>
+                </div>
+                <div class="subject locked" id="35" onclick="toggleSubject(this)">
+                    <div class="subject-name">[35] Formulación y gestión de bioproyectos</div>
+                    <div class="correlative">Correlativas: 31-32</div>
+                </div>
+                <div class="subject locked" id="36" onclick="toggleSubject(this)">
+                    <div class="subject-name">[36] Virología</div>
+                    <div class="correlative">Correlativas: 18</div>
+                </div>
+                <div class="subject locked" id="37a" onclick="toggleSubject(this)">
+                    <div class="subject-name">[37a] Seminario de investigación 1</div>
+                    <div class="correlative">Correlativas: 30-31-33</div>
+                </div>
+                <div class="subject locked" id="37b" onclick="toggleSubject(this)">
+                    <div class="subject-name">[37b] Taller de práctica pre-profesional</div>
+                    <div class="correlative">Correlativas: 30-31-33</div>
+                </div>
+            </div>
+            
+            <!-- 10mo Semestre -->
+            <div class="semester-card">
+                <h3 class="semester-title">Segundo Semestre</h3>
+                <div class="subject locked" id="38" onclick="toggleSubject(this)">
+                    <div class="subject-name">[38] Bioeconomía</div>
+                    <div class="correlative">Correlativas: 35</div>
+                </div>
+                <div class="subject locked" id="39" onclick="toggleSubject(this)">
+                    <div class="subject-name">[39] Políticas sustentables y planificación ambiental</div>
+                    <div class="correlative">Correlativas: 20</div>
+                </div>
+                <div class="subject locked" id="40" onclick="toggleSubject(this)">
+                    <div class="subject-name">[40] Biotecnología de los alimentos</div>
+                    <div class="correlative">Correlativas: 15-23-24</div>
+                </div>
+                <div class="subject locked" id="41" onclick="toggleSubject(this)">
+                    <div class="subject-name">[41] Biociencias, tecnología y sociedad</div>
+                    <div class="correlative">Correlativas: 25</div>
+                </div>
+                <div class="subject locked" id="42a" onclick="toggleSubject(this)">
+                    <div class="subject-name">[42a] Seminario de investigación 2</div>
+                    <div class="correlative">Correlativas: 37a</div>
+                </div>
+                <div class="subject locked" id="42b" onclick="toggleSubject(this)">
+                    <div class="subject-name">[42b] Tratamiento de efluentes industriales</div>
+                    <div class="correlative">Correlativas: 20-37b-39</div>
+                </div>
+                <div class="subject locked" id="42c" onclick="toggleSubject(this)">
+                    <div class="subject-name">[42c] Inmunotecnologías</div>
+                    <div class="correlative">Correlativas: 28-36-37b</div>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Correlativas (ejemplo)
+        // Definición de correlativas
         const prerequisites = {
-            "06": "01",  // Análisis I → Álgebra
-            "07": "02",  // Química II → Química I
-            "10": ["01", "06"], // Física I → Álgebra + Análisis I
-            "18": "04"   // Biología celular → Biología general
+            "06": "01",
+            "07": "02",
+            "08": "04",
+            "10": ["01", "06"],
+            "11": ["02", "07"],
+            "12": ["01", "06"],
+            "14": "11",
+            "15": ["02", "07"],
+            "16": ["02", "07"],
+            "17": ["02", "10"],
+            "18": "04",
+            "19": "14",
+            "20": "04",
+            "22": "18",
+            "23": "08",
+            "24": "15",
+            "25": "13",
+            "26": "21",
+            "27": "22",
+            "28": "18",
+            "29": "20",
+            "30": ["18", "22"],
+            "31": ["08", "14"],
+            "32": "28",
+            "33": ["19", "20"],
+            "34": "30",
+            "35": ["31", "32"],
+            "36": "18",
+            "37a": ["30", "31", "33"],
+            "37b": ["30", "31", "33"],
+            "38": "35",
+            "39": "20",
+            "40": ["15", "23", "24"],
+            "41": "25",
+            "42a": "37a",
+            "42b": ["20", "37b", "39"],
+            "42c": ["28", "36", "37b"]
         };
 
+        // Función para marcar/desmarcar materias
         function toggleSubject(subjectDiv) {
+            const subjectId = subjectDiv.id;
+            
             if (subjectDiv.classList.contains('locked')) return;
             
             subjectDiv.classList.toggle('completed');
-            // Aquí iría la lógica para desbloquear correlativas (como en el código anterior)
+            
+            const isCompleted = subjectDiv.classList.contains('completed');
+            
+            // Buscar materias que dependan de esta
+            for (const [nextSubjectId, reqSubjectId] of Object.entries(prerequisites)) {
+                if ((Array.isArray(reqSubjectId) && reqSubjectId.includes(subjectId)) {
+                    checkMultiplePrerequisites(nextSubjectId);
+                } else if (reqSubjectId === subjectId) {
+                    updateSubjectStatus(nextSubjectId, isCompleted);
+                }
+            }
         }
 
+        // Para materias con múltiples correlativas
+        function checkMultiplePrerequisites(subjectId) {
+            const requiredSubjects = prerequisites[subjectId];
+            const allApproved = requiredSubjects.every(sub => {
+                const subject = document.getElementById(sub);
+                return subject?.classList.contains('completed');
+            });
+            
+            if (allApproved) {
+                const nextSubject = document.getElementById(subjectId);
+                nextSubject?.classList.remove('locked');
+                nextSubject?.classList.add('unlocked');
+            } else {
+                const nextSubject = document.getElementById(subjectId);
+                if (nextSubject && !nextSubject.classList.contains('completed')) {
+                    nextSubject.classList.add('locked');
+                    nextSubject.classList.remove('unlocked');
+                }
+            }
+        }
+
+        // Actualizar estado de materia dependiente
+        function updateSubjectStatus(subjectId, isUnlocked) {
+            const subject = document.getElementById(subjectId);
+            if (!subject) return;
+            
+            if (isUnlocked) {
+                subject.classList.remove('locked');
+                subject.classList.add('unlocked');
+            } else {
+                if (!subject.classList.contains('completed')) {
+                    subject.classList.add('locked');
+                    subject.classList.remove('unlocked');
+                }
+            }
+        }
+
+        // Botón modo oscuro/claro
         function toggleDarkMode() {
             document.body.classList.toggle('dark-mode');
             const button = document.querySelector('.toggle-mode');
-            button.textContent = document.body.classList.contains('dark-mode') ? "☀ Modo Claro" : "🌙 Modo Oscuro";
+            button.textContent = document.body.classList.contains('dark-mode') ? "Modo Claro" : "Modo Oscuro";
         }
     </script>
 </body>
